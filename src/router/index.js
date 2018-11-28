@@ -21,9 +21,18 @@ import Layout from '../views/layout/Layout'
     icon: 'svg-name'             the icon show in the sidebar,
   }
 **/
+
+// 所有权限公用路由表
+// 如首页 登录 404 页面不需要登录权限的页面
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
+
+  // layout
+  {
+    path: '/layout',
+    component: Layout
+  },
 
   {
     path: '/',
@@ -144,8 +153,13 @@ export const constantRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
+// 实例化vue只挂载constantRouterMap
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+// 异步挂载路由
+// 动态加载需要权限的路由表
+export const asyncRouterMap = []
