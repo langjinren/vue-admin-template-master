@@ -1,10 +1,9 @@
-# vue-admin-template
-
 ## Build Setup
 
 ```bash
+
 # Clone project
-git clone https://github.com/langjinren/vue-admin-template.git
+git clone https://github.com/langjinren/vue-admin-template-master.git
 
 # Install dependencies
 npm install
