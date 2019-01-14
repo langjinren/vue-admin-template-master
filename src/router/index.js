@@ -11,9 +11,10 @@ import Layout from '../views/layout/Layout'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
+* alwaysShow: true               当你一个路由下面的 children 声明的路由大于1个时，自动会变成嵌套的模式--如组件页面
+*                                只有一个时，会将那个子路由当做根路由显示在侧边栏--如引导页面
+*                                若你想不管路由下面的 children 声明的个数都显示你的根路由
+*                                你可以设置 alwaysShow: true，这样它就会忽略之前定义的规则，一直显示根路由
 * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
@@ -22,17 +23,10 @@ import Layout from '../views/layout/Layout'
   }
 **/
 
-// 所有权限公用路由表
-// 如首页 登录 404 页面不需要登录权限的页面
+// 不需要动态判断权限的路由，如登录页、404、等通用页面
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-
-  // layout
-  {
-    path: '/layout',
-    component: Layout
-  },
 
   {
     path: '/',
@@ -51,7 +45,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    meta: { title: 'Example-test', icon: 'example' },
     children: [
       {
         path: 'table',
@@ -95,7 +89,7 @@ export const constantRouterMap = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'Menu1' },
+        meta: { title: 'Menu1', icon: 'form' },
         children: [
           {
             path: 'menu1-1',
@@ -134,7 +128,7 @@ export const constantRouterMap = [
       {
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' }
+        meta: { title: 'menu2', icon: 'form' }
       }
     ]
   },
@@ -153,13 +147,38 @@ export const constantRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-// 实例化vue只挂载constantRouterMap
+// 默认加载constantRouterMap
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
 
-// 异步挂载路由
-// 动态加载需要权限的路由表
-export const asyncRouterMap = []
+// 需求动态判断权限并通过 addRouters 动态添加的页面
+
+export const asyncRouterMap = [
+  {
+    path: '/test',
+    component: Layout,
+    name: 'Test',
+    redirect: '/test/index',
+    // alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'test',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'PagePermission',
+        meta: {
+          title: 'pagePermission',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      }
+    ]
+  },
+  { path: '/404', component: () => import('@/views/404'), hidden: true }
+]
