@@ -1,22 +1,19 @@
-## Build Setup
+# 登录模板
 
-```bash
-
-# Clone project
-git clone https://github.com/langjinren/vue-admin-template-master.git
-
-# Install dependencies
-npm install
-
-# 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
-npm install --registry=https://registry.npm.taobao.org
-
-# Serve with hot reload at localhost:9260
-npm run dev
-
-# Build for production with minification
-npm run build
-
-# Build for production and view the bundle analyzer report
-npm run build --report
+## Project setup
 ```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
